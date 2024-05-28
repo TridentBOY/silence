@@ -1,7 +1,7 @@
 
------- * Silence.cc priv_9 Menu * ------
+------ * Silence priv_9 Menu * ------
 --[[
-    # Rewriten by: Silence.cc
+    # Rewriten by: Silence
 ]]
 
 repeat
@@ -9,8 +9,8 @@ repeat
  until game:IsLoaded()
 
 -- Menu/UI Creation
-if not isfile("Silence.cc") then
-    makefolder("Silence.cc")
+if not isfile("Silence") then
+    makefolder("Silence")
  end
  
  local menu = game:GetObjects("rbxassetid://17651669247")[1] 
@@ -291,14 +291,14 @@ if not isfile("Silence.cc") then
          local ping = string.format('%.0f', game.Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
          local uid = "1"
          local fpsValue = string.split(game.Stats.Workspace.Heartbeat:GetValueString(), ".")[1]
-         WaterMarkLabel.Text = 'Silence.cc<font color="rgb(74, 74, 74)"></font> - uid: <font color="rgb(74, 74, 74)">' .. uid .. '</font> / fps: <font color="rgb(255, 0, 4)">' .. fpsValue .. '</font> / ping: <font color="rgb(255, 0, 4)">' .. ping .. '</font> / time: <font color="rgb(255, 0, 4)">' .. time .. '</font>'
+         WaterMarkLabel.Text = 'Silence<font color="rgb(74, 74, 74)"></font> - uid: <font color="rgb(74, 74, 74)">' .. uid .. '</font> / fps: <font color="rgb(255, 0, 4)">' .. fpsValue .. '</font> / ping: <font color="rgb(255, 0, 4)">' .. ping .. '</font> / time: <font color="rgb(255, 0, 4)">' .. time .. '</font>'
        end
     end)
     return Watermark
  end
  
  local library = {
-    Title = 'Silence.cc<font color="rgb(74, 74, 74)"></font> | Private',
+    Title = 'Silence<font color="rgb(74, 74, 74)"></font> | Private',
     keybind = Enum.KeyCode.RightBracket,
     Watermark = createWatermark(),
        Colors = {
@@ -350,13 +350,74 @@ if not isfile("Silence.cc") then
     
     menu.bg.Position = UDim2.new(0.5,-menu.bg.Size.X.Offset/2,0.5,-menu.bg.Size.Y.Offset/2)
     menu.Parent = CloneCore
-    menu.Name = "Silence.cc_gui"
+    menu.Name = "Silence_gui"
     local ProtectGui = protectgui or (syn and syn.protect_gui) or (function() end)
     local CloneScreenGui = cloneref(Instance.new("ScreenGui"))
     ProtectGui(CloneScreenGui)   
     CloneScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
     CloneScreenGui.Parent = CloneCore
-    CloneScreenGui.Name = "Silence.cc_gui"
+    CloneScreenGui.Name = "Silence_gui"
+
+
+ 
+local close = Instance.new("TextLabel")
+
+close.Name = "close"
+close.Parent = menu.bg.TopLine
+close.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+close.BackgroundTransparency = 1.000
+close.BorderColor3 = Color3.fromRGB(0, 0, 0)
+close.BorderSizePixel = 0
+close.Position = UDim2.new(0.00700000022, 0, -25.9899998, 0)
+close.Size = UDim2.new(0, 182, 0, 25)
+close.Font = Enum.Font.SourceSans
+close.Text = "ChatGPT.CC Trident Survival"
+close.TextColor3 = Color3.fromRGB(255, 0, 4)
+close.TextSize = 17.000
+close.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Animation variables
+local text = "ChatGPT.CC Trident Survival"
+local speed = 0.07 -- Typing speed (lower is faster)
+local waitTime = 0.7 -- Time to wait before restarting animation
+local colors = {
+    Color3.fromRGB(255, 0, 4),     -- Text color
+}
+
+local function animateTyping(targetText)
+    local typedText = ""
+    for i = 1, #targetText do
+        typedText = targetText:sub(1, i)
+        close.Text = typedText
+        local colorIndex = (i % #colors) + 1
+        close.TextColor3 = colors[colorIndex]
+        wait(speed)
+    end
+    wait(waitTime)
+end
+
+local function animateBackwardsRemoval(targetText)
+    for i = #targetText, 1, -1 do
+        close.Text = targetText:sub(1, i)
+        local colorIndex = (i % #colors) + 1
+        close.TextColor3 = colors[colorIndex]
+        wait(speed)
+    end
+    close.Text = "" -- Destroy first letter
+    wait(waitTime)
+end
+
+local function animateText()
+    while true do
+        animateTyping(text)
+        animateBackwardsRemoval(text)
+    end
+end
+
+-- Start animation in a coroutine
+coroutine.wrap(animateText)()
+
+
 
     for _, obj in pairs(menu:GetDescendants()) do
         if obj.Name:lower():find('name_esp') then
@@ -2295,7 +2356,7 @@ if not isfile("Silence.cc") then
                             if v == x then return true end
                             end return false end
                             function library:createConfig()
-                                makefolder("Silence.cc")
+                                makefolder("Silence")
                                 local name = library.flags["config_name"]
                                 if contains(library.options["config_box"].values, name) then return library:Notify(name..".cfg already exists!", 5) end
                                 if name == "" then return library:Notify("You need to put a name in!", 5) end
@@ -2307,14 +2368,14 @@ if not isfile("Silence.cc") then
                                 else jig[i] = v
                                 end
                             end
-                            writefile("Silence.cc/"..name..".cfg",game:GetService("HttpService"):JSONEncode(jig))
+                            writefile("Silence/"..name..".cfg",game:GetService("HttpService"):JSONEncode(jig))
                             library:Notify("Succesfully created config "..name..".cfg!", 5)
                             library:refreshConfigs()
                         end
 
                         function library:saveConfig()
                             pcall(function()
-                                makefolder("Silence.cc")
+                                makefolder("Silence")
                                 local name = library.flags["config_box"]
                                 if not name then
                                     return
@@ -2376,7 +2437,7 @@ if not isfile("Silence.cc") then
 
                 function library:refreshConfigs()
                     local tbl = {}
-                    for i,v in next, listfiles("Silence.cc") do table.insert(tbl,v) end
+                    for i,v in next, listfiles("Silence") do table.insert(tbl,v) end
                     library.options["config_box"].refresh(tbl)
                 end      
             end)()                         
